@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Blackjack
@@ -14,6 +15,23 @@ namespace Blackjack
         public string[] Color = { "♠", "♥", "♣", "♦" };
         public int SumUser = 0;
         public int SumEnemy = 0;
+        public Dictionary<string, int> CardDict = new Dictionary<string, int>()
+        {
+            {"A" , 1},
+            {"2" , 2},
+            {"3" , 3},
+            {"4" , 4},
+            {"5" , 5},
+            {"6" , 6},
+            {"7" , 7},
+            {"8" , 8},
+            {"9" , 9},
+            {"10" , 10},
+            {"J" , 11},
+            {"Q" , 12},
+            {"K" , 13},
+        };
+
         public MainPage()
         {
             InitializeComponent();
@@ -37,12 +55,12 @@ namespace Blackjack
             {
                 Text = card.CardValue.ToString(),
                 FontSize = 36,
-                HorizontalTextAlignment = TextAlignment.End,
+                HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             };
 
             Label CardColor = new Label()
-            {
+            {   
                 Text = card.CardColor.ToString(),
                 FontSize = 12,
                 HorizontalTextAlignment = TextAlignment.Start
@@ -67,62 +85,16 @@ namespace Blackjack
             //Adding to deck
             cardDeckUser.Children.Add(CardLayoutUser);
 
-            switch (card.CardValue)
-            {
-                case "A":
-                    SumUser += 1;
-                    break;
-                case "2":
-                    SumUser += 2;
-                    break;
-                case "3":
-                    SumUser += 3;
-                    break;
-                case "4":
-                    SumUser += 4;
-                    break;
-                case "5":
-                    SumUser += 5;
-                    break;
-                case "6":
-                    SumUser += 6;
-                    break;
-                case "7":
-                    SumUser += 7;
-                    break;
-                case "8":
-                    SumUser += 8;
-                    break;
-                case "9":
-                    SumUser += 9;
-                    break;
-                case "10":
-                    SumUser += 10;
-                    break;
-                case "J":
-                    SumUser += 11;
-                    break;
-                case "Q":
-                    SumUser += 12;
-                    break;
-                case "K":
-                    SumUser += 13;
-                    break;
-            }
+            SumUser += CardDict[card.CardValue];
+
             sumULbl.Text = SumUser.ToString();
-            DrawCardEnemy();
-            /*
-            if (SumUser > 21)
+
+            CheckScore();
+
+            if (SumUser < 21 && cardDeckUser.Children.Count != 0)
             {
-                DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                Restart();
+                DrawCardEnemy();
             }
-            else if (SumUser == 21 && SumEnemy != 21)
-            {
-                DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                Restart();
-            }*/
-            CheckScores();
         }
         private void DrawCardEnemy()
         {
@@ -140,7 +112,7 @@ namespace Blackjack
             {
                 Text = card.CardValue.ToString(),
                 FontSize = 36,
-                HorizontalTextAlignment = TextAlignment.End,
+                HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             };
 
@@ -169,62 +141,11 @@ namespace Blackjack
             //Adding to deck
             cardDeckEnemy.Children.Add(CardLayoutEnemy);
 
-            switch (card.CardValue)
-            {
-                case "A":
-                    SumEnemy += 1;
-                    break;
-                case "2":
-                    SumEnemy += 2;
-                    break;
-                case "3":
-                    SumEnemy += 3;
-                    break;
-                case "4":
-                    SumEnemy += 4;
-                    break;
-                case "5":
-                    SumEnemy += 5;
-                    break;
-                case "6":
-                    SumEnemy += 6;
-                    break;
-                case "7":
-                    SumEnemy += 7;
-                    break;
-                case "8":
-                    SumEnemy += 8;
-                    break;
-                case "9":
-                    SumEnemy += 9;
-                    break;
-                case "10":
-                    SumEnemy += 10;
-                    break;
-                case "J":
-                    SumEnemy += 11;
-                    break;
-                case "Q":
-                    SumEnemy += 12;
-                    break;
-                case "K":
-                    SumEnemy += 13;
-                    break;
-            }
+            SumEnemy += CardDict[card.CardValue];
+
             sumELbl.Text = SumEnemy.ToString();
-            /*
-            if (SumEnemy > 21)
-            {
-                DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                Restart();
-            }
-            if (SumEnemy == 21 && SumUser != 21)
-            {
-                DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                Restart();
-            }
-            */
-            CheckScores();
+
+            CheckScore();
 
         }
         public void Restart()
@@ -236,58 +157,48 @@ namespace Blackjack
             cardDeckUser.Children.Clear();
             cardDeckEnemy.Children.Clear();
         }
-        public void CheckScores()
+        public async void CheckScore()
         {
-
-                if (SumEnemy > 21 && SumUser <= 21)
-                {
-                    DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                    Restart();
-                }
-                else
-                { 
-                    if (SumUser > 21)
-                    {
-                        DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                        Restart();
-                    }
-                    else
-                    {
-                        if (SumEnemy == 21 && SumUser != 21)
-                        {
-                            DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                            Restart();
-                        }
-                        else
-                        {
-                            if (SumUser == 21 && SumEnemy != 21)
-                            {
-                                DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
-                                Restart();
-                            }
-                        }
-                    }
-                }
-            
+            if (SumEnemy == 21 && SumUser == 21)
+            {
+                await DisplayAlert("Remis", "Ty: " + SumUser + ", Przeciwnik: " + SumEnemy, "OK");
+                Restart();
+            }
+            if (SumEnemy > 21 && SumUser <= 21 || SumUser == 21 && SumEnemy != 21)
+            {
+                await DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
+                Restart();
+            }
+            if (SumUser > 21 || SumEnemy == 21 && SumUser != 21)
+            {
+                await DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
+                Restart();
+            }
         }
+
         private void Pass(object sender, EventArgs e)
         {
-            if (SumEnemy < SumUser)
+            if (SumEnemy <= SumUser)
             {
                 DrawCardEnemy();
             }
-            PassCheckScores();
+            PassCheckScore();
         }
-        public void PassCheckScores()
+        public async void PassCheckScore()
         {
+            if (SumEnemy == SumUser)
+            {
+                await DisplayAlert("Remis", "Ty: " + SumUser + ", Przeciwnik: " + SumEnemy, "OK");
+                Restart();
+            }
             if (SumUser > SumEnemy)
             {
-                DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
+                await DisplayAlert("Wygrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
                 Restart();
             }
             if (SumEnemy > SumUser)
             {
-                DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
+                await DisplayAlert("Przegrywasz", "Ty: " + SumUser + " Przeciwnik: " + SumEnemy, "OK");
                 Restart();
             }
         }

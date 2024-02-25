@@ -4,25 +4,30 @@
              x:Class="Blackjack.MainPage">
 
     <StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Twoje punkty: "/>
-                <Label x:Name="sumULbl"/>
-            </StackLayout>
 
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Punkty przeciwnika: "/>
-                <Label x:Name="sumELbl"/>
+        <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+            <Label Text="Punkty przeciwnika: "/>
+            <Label x:Name="sumELbl"/>
+        </StackLayout>
+        
+        <ScrollView Orientation="Horizontal" VerticalOptions="EndAndExpand" Margin="0, 0, 0,0">
+            <StackLayout x:Name="cardDeckEnemy" VerticalOptions="EndAndExpand" HeightRequest="130" Margin="0, 0, 0, 20" BackgroundColor="DarkGray" Orientation="Horizontal" Padding="20" >
+
             </StackLayout>
+        </ScrollView>
+
+
+
+        <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+            <Label Text="Twoje punkty: "/>
+            <Label x:Name="sumULbl"/>
         </StackLayout>
 
-        <StackLayout x:Name="cardDeckEnemy" VerticalOptions="EndAndExpand" HeightRequest="130" Margin="0, 0, 0, 30" BackgroundColor="DarkGray" Orientation="Horizontal" Padding="20">
-
-        </StackLayout>
-
-        <StackLayout x:Name="cardDeckUser" VerticalOptions="EndAndExpand" HeightRequest="130" BackgroundColor="DarkGray" Orientation="Horizontal" Padding="20">
+        <ScrollView Orientation="Horizontal" VerticalOptions="EndAndExpand" Margin="0, 0, 0, 20">
+            <StackLayout x:Name="cardDeckUser" VerticalOptions="EndAndExpand" HeightRequest="130" Margin="0, 0, 0, 20" BackgroundColor="DarkGray" Orientation="Horizontal" Padding="20">
             
-        </StackLayout>
+            </StackLayout>
+        </ScrollView>
 
         <Button Text="Dobierz" Clicked="DrawCardUser" VerticalOptions="EndAndExpand" WidthRequest="200" HeightRequest="60" HorizontalOptions="Center" BackgroundColor="DarkTurquoise"/>
         <Button Text="Spasuj" Clicked="Pass" VerticalOptions="End" WidthRequest="200" HeightRequest="60" HorizontalOptions="Center" BackgroundColor="DarkKhaki"/>
